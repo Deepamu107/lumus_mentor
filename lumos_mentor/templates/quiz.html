@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="layout">
+    <!-- Question Area -->
+    <div class="card question-card">
+        <h2>Question {{ question.id }}</h2>
+        <p class="question-text">{{ question.question }}</p>
+
+        <form method="post" id="quiz-form" class="form">
+            <input type="hidden" name="question_id" value="{{ question.id }}">
+            <input type="hidden" id="time_taken_sec" name="time_taken_sec" value="0">
+            <input type="hidden" id="used_hint" name="used_hint" value="false">
+
+            {% for opt in question.options %}
+            <label class="option">
+                <input type="radio" name="answer" value="{{ opt }}" required>
+                <span>{{ opt }}</span>
+            </label>
+            {% endfor %}
+
+            <div class="actions">
+                <button type="button" class="btn-secondary" id="hint-btn">
+                    Show Hint
+                </button>
+                <button type="submit" class="btn-primary">
+                    Submit & Next
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Mentor Panel -->
+    <div class="card mentor-card">
+        <h3>AI Mentor</h3>
+        <p class="style-label">
+            Detected Learning Style:
+            <strong>{{ last_style }}</strong>
+        </p>
+
+        {% if last_explanation %}
+            <p class="mentor-title">Explanation for previous question:</p>
+            <p class="mentor-question">“{{ last_question_text }}”</p>
+            <p class="mentor-explanation">{{ last_explanation }}</p>
+        {% else %}
+            <p class="mentor-explanation">
+                Answer this question normally. After you submit, I will analyze
+                your behaviour and adapt my teaching style for you.
+            </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

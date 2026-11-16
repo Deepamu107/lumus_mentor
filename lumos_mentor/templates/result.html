@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h1>Great job, {{ name }}! 🎉</h1>
+    <p class="subtitle">Here is how Lumos Mentor understood your learning style.</p>
+
+    <div class="stats-grid">
+        <div class="stat">
+            <h3>Total Questions</h3>
+            <p>{{ total_questions }}</p>
+        </div>
+        <div class="stat">
+            <h3>Correct Answers</h3>
+            <p>{{ total_correct }}</p>
+        </div>
+        <div class="stat">
+            <h3>Accuracy</h3>
+            <p>{{ "%.1f"|format(overall_acc) }}%</p>
+        </div>
+        <div class="stat">
+            <h3>Avg Response Time</h3>
+            <p>{{ "%.1f"|format(avg_time) }}s</p>
+        </div>
+        <div class="stat">
+            <h3>Hint Usage</h3>
+            <p>{{ "%.1f"|format(hint_rate) }}%</p>
+        </div>
+        <div class="stat wide">
+            <h3>Detected Learning Style</h3>
+            <p>{{ final_style }}</p>
+        </div>
+    </div>
+
+    <h2>Interaction Log</h2>
+    <table class="log-table">
+        <tr>
+            <th>QID</th>
+            <th>Type</th>
+            <th>Difficulty</th>
+            <th>Time (s)</th>
+            <th>Hint?</th>
+            <th>Correct?</th>
+        </tr>
+        {% for l in logs %}
+        <tr>
+            <td>{{ l.question_id }}</td>
+            <td>{{ l.question_type }}</td>
+            <td>{{ l.difficulty }}</td>
+            <td>{{ "%.1f"|format(l.time_taken_sec) }}</td>
+            <td>{{ "Yes" if l.used_hint else "No" }}</td>
+            <td>{{ "✔" if l.is_correct else "✘" }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{{ url_for('index') }}" class="btn-primary">
+        Restart as New Learner
+    </a>
+</div>
+{% endblock %}
